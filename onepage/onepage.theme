@@ -1,0 +1,109 @@
+<?php
+
+/**
+ * @file
+ * Functions to support theming in the Onepage theme.
+ */
+
+/**
+ * Implements hook_theme().
+ */
+function onepage_theme() {
+  $theme_path = drupal_get_path('theme', 'onepage');
+  $sections = array('about', 'team', 'about2', 'services', 'facts', 'portfolio', 'pricing', 'blog', 'clients', 'testimonials', 'contact', 'social_media');
+  $theme_array = array();
+  foreach ($sections as $section) {
+    $theme_array['onepage_' . $section] = array(
+      'variables' => array(),
+      'path' => $theme_path . '/templates/partials',
+      'template' => str_replace('_', '-', $section),
+    );
+  }
+  return $theme_array;
+}
+
+/**
+ * Implements hook_preprocess_page().
+ */
+function onepage_preprocess_page(&$variables) {
+  $sections = array(
+    'about' => array(
+      '#enabled' => TRUE,
+      '#nav' => 'ABOUT',
+      '#show_nav' => TRUE,
+      '#theme' => 'onepage_about',
+    ),
+    'team' => array(
+      '#enabled' => FALSE,
+      '#nav' => 'TEAM',
+      '#show_nav' => TRUE,
+      '#theme' => 'onepage_team',
+    ),
+    'about2' => array(
+      '#enabled' => FALSE,
+      '#nav' => 'ABOUT2',
+      '#show_nav' => FALSE,
+      '#theme' => 'onepage_about2',
+    ),
+    'services' => array(
+      '#enabled' => TRUE,
+      '#nav' => 'SERVICES',
+      '#show_nav' => TRUE,
+      '#theme' => 'onepage_services',
+    ),
+    'facts' => array(
+      '#enabled' => FALSE,
+      '#nav' => 'FACTS',
+      '#show_nav' => FALSE,
+      '#theme' => 'onepage_facts',
+    ),
+    'portfolio' => array(
+      '#enabled' => TRUE,
+      '#nav' => 'PORTFOLIO',
+      '#show_nav' => TRUE,
+      '#theme' => 'onepage_portfolio',
+    ),
+    'pricing' => array(
+      '#enabled' => FALSE,
+      '#nav' => 'PRICING',
+      '#show_nav' => FALSE,
+      '#theme' => 'onepage_pricing',
+    ),
+    'blog' => array(
+      '#enabled' => FALSE,
+      '#nav' => 'BLOG',
+      '#show_nav' => FALSE,
+      '#theme' => 'onepage_blog',
+    ),
+    'clients' => array(
+      '#enabled' => FALSE,
+      '#nav' => 'CLIENTS',
+      '#show_nav' => FALSE,
+      '#theme' => 'onepage_clients',
+    ),
+    'testimonials' => array(
+      '#enabled' => TRUE,
+      '#nav' => 'TESTIMONIALS',
+      '#show_nav' => FALSE,
+      '#theme' => 'onepage_testimonials',
+    ),
+    'contact' => array(
+      '#enabled' => TRUE,
+      '#nav' => 'CONTACT',
+      '#show_nav' => TRUE,
+      '#theme' => 'onepage_contact',
+    ),
+    'social_media' => array(
+      '#enabled' => TRUE,
+      '#nav' => 'SOCIAL MEDIA',
+      '#show_nav' => FALSE,
+      '#theme' => 'onepage_social_media',
+    ),
+  );
+
+  foreach ($sections as $section => $data) {
+    if ($data['#enabled']) {
+      $variables['onepage'][$section] = $data;
+    }
+  }
+}

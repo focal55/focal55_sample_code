@@ -1,0 +1,30 @@
+global-styling:
+  version: 1.x
+  css:
+    theme:
+      css/all-stylesheet.css: {}
+  js:
+    js/bootstrap.min.js: {}
+    js/animation/jquery.appear.js: {}
+    js/contact/contact-form.js: {}
+    lightbox/ekko-lightbox.js: {}
+    js/isotope/jquery.isotope.min.js: {}
+    js/isotope/custom-isotope.js: {}
+    rs-plugin/js/jquery.themepunch.plugins.min.js: {}
+    rs-plugin/js/jquery.themepunch.revolution.js: {}
+    js/rs-init.js: {}
+    owl-carousel/owl-carousel/owl.carousel.js: {}
+    js/custom.js: {}
+    js/parallex/script.js: {}
+    js/nav/jquery.scrollTo.js: {}
+    js/nav/jquery.nav.js: {}
+    js/sticky/jquery.sticky.js: {}
+    js/progress-bars/jquery.donutchart.js: {}
+    js/SmoothScroll/SmoothScroll.js: {}
+    js/jquery.fitvids.js: {}
+  dependencies:
+      - core/jquery
+  js-header:
+    header: true
+    js:
+      https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js: { type: external, minified: true }

@@ -1,0 +1,78 @@
+.accent_font(@font-size:@font-size-base, @font-weight:100) {
+  font-family: "Lato";
+  font-weight:@font-weight;
+  font-size:@font-size;
+}
+
+.views-image-grid() {
+  .views-row {
+    margin-bottom:30px;
+  }
+  .views-field-field-video-embed-thumbnail-path {
+    @media @wide {
+      min-height: 182px;
+    }
+    img {
+      width:100%;
+      height:auto;
+    }
+  }
+  .views-field-title {
+    height:40px;
+    margin:10px 0 0 0;
+
+    h4 {
+      border-left:3px solid @santacruz-gray;
+      padding-left:5px;
+      margin:0;
+      a {
+        font-size:16px;
+        color:@santacruz-light-blue;
+      }
+    }
+  }
+}
+
+.views-list() {
+  .views-row {
+    clear:both;
+    overflow:hidden;
+    .views-field-field-image {
+      float:left;
+      img {
+        width:auto;
+        height:auto;
+      }
+    }
+    .views-field-title {
+      margin-left:80px;
+      h4 {
+        margin-top:0;
+      }
+    }
+    .views-field-body {
+      margin-left:80px;
+      background:url('../images/divider-dotted.png') repeat-x bottom;
+      padding-bottom:20px;
+      margin-bottom:15px;
+    }
+    &.views-row-last {
+      .views-field-body {
+        background: none;
+      }
+    }
+  }
+}
+
+.btn-santacruz(@color: @santacruz-green, @font-size:@font-size-base) {
+  border-radius: 6px;
+  border:1px solid @color;
+  color:@color;
+  padding:8px 15px;
+  font-size:@font-size;
+  font-weight:bold;
+  &:hover {
+    background:@color;
+    color:#fff;
+  }
+}

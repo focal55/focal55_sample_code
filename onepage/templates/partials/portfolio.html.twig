@@ -1,0 +1,93 @@
+{#
+/**
+ * @file
+ * Onepage Template's Portfolio Section.
+ *
+#}
+
+<!-- PORTFOLIO STARTS
+   ========================================================================= -->
+<section id="portfolio">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 section-heading animated" style="text-align:center" data-animation="fadeInUp" data-animation-delay="0">
+                <h2>OUR PORTFOLIO</h2>
+                <h1>DISPLAY YOUR WORK</h1>
+                <p class="line">&nbsp;</p>
+            </div>
+        </div>
+        <!-- Portfolio Nav Starts -->
+        <div class="row">
+            <div class="col-md-12 animated" data-animation="fadeInUp" data-animation-delay="100">
+                <div id="options">
+                    <ul id="filters" class="option-set clearfix" data-option-key="filter">
+                        <li><a href="#filter" data-option-value="*" class="selected"><i class="fa fa-th"></i></a></li>
+                        <li><a href="#filter" data-option-value=".graphics"><i class="fa fa-heart"></i> </a></li>
+                        <li><a href="#filter" data-option-value=".photos"><i class="fa fa-picture-o"></i></a></li>
+                        <li><a href="#filter" data-option-value=".videos"><i class="fa fa-video-camera"></i></a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <!-- Portfolio Nav Ends -->
+    </div>
+    <!-- AJAX Portfolio Details -->
+    <div class="portfolio-detail"></div>
+    <!-- AJAX Portfolio Details -->
+    <div class="container">
+        <!-- Portfolio Thumbs Starts -->
+        <div class="row" id="container-thumbs">
+
+            <div class="col-xs-12 col-sm-6 col-md-3 items graphics animated" data-animation="fadeIn" data-animation-delay="200" data-project="portfolio-pages/standard-page-1.html">
+                <a href="#" class="overlayzoom"><img src="{{ directory }}/images/portfolio/1.jpg" class="img-responsive" alt=""><span class="zoom"><span><i class="fa fa-heart"></i></span></span> </a> </div>
+
+            <div class="col-xs-12 col-sm-6 col-md-3 items videos animated" data-animation="fadeIn" data-animation-delay="300" data-project="portfolio-pages/vimeo-page.html">
+                <a href="#" class="overlayzoom"><img src="{{ directory }}/images/portfolio/2.jpg" class="img-responsive" alt=""><span class="zoom"><span><i class="fa fa-video-camera"></i></span></span> </a> </div>
+
+            <div class="col-xs-12 col-sm-6 col-md-3 items photos animated" data-animation="fadeIn" data-animation-delay="400" data-project="portfolio-pages/standard-page-2.html">
+                <a href="#" class="overlayzoom"><img src="{{ directory }}/images/portfolio/3.jpg" class="img-responsive" alt=""><span class="zoom"><span><i class="fa fa-picture-o"></i></span></span> </a> </div>
+
+            <div class="col-xs-12 col-sm-6 col-md-3 items photos animated" data-animation="fadeIn" data-animation-delay="500" data-project="portfolio-pages/gallery-page.html">
+                <a href="#" class="overlayzoom"><img src="{{ directory }}/images/portfolio/4.jpg" class="img-responsive" alt=""><span class="zoom"><span><i class="fa fa-picture-o"></i></span></span> </a> </div>
+
+            <div class="col-xs-12 col-sm-6 col-md-3 items videos animated" data-animation="fadeIn" data-animation-delay="600" data-project="portfolio-pages/youtube-page.html">
+                <a href="#" class="overlayzoom"><img src="{{ directory }}/images/portfolio/5.jpg" class="img-responsive" alt=""><span class="zoom"><span><i class="fa fa-video-camera"></i></span></span> </a> </div>
+
+            <div class="col-xs-12 col-sm-6 col-md-3 items graphics animated" data-animation="fadeIn" data-animation-delay="700" data-project="portfolio-pages/standard-page-1.html">
+                <a href="#" class="overlayzoom"><img src="{{ directory }}/images/portfolio/6.jpg" class="img-responsive" alt=""><span class="zoom"><span><i class="fa fa-heart"></i></span></span> </a> </div>
+
+            <div class="col-xs-12 col-sm-6 col-md-3 items photos animated" data-animation="fadeIn" data-animation-delay="800" data-project="portfolio-pages/standard-page-2.html">
+                <a href="#" class="overlayzoom"><img src="{{ directory }}/images/portfolio/7.jpg" class="img-responsive" alt=""><span class="zoom"><span><i class="fa fa-picture-o"></i></span></span> </a> </div>
+
+            <div class="col-xs-12 col-sm-6 col-md-3 items videos animated" data-animation="fadeIn" data-animation-delay="900" data-project="portfolio-pages/vimeo-page.html">
+                <a href="#" class="overlayzoom"><img src="{{ directory }}/images/portfolio/8.jpg" class="img-responsive" alt=""><span class="zoom"><span><i class="fa fa-video-camera"></i></span></span> </a> </div>
+
+            <div class="col-xs-12 col-sm-6 col-md-3 items graphics animated" data-animation="fadeIn" data-animation-delay="1000" data-project="portfolio-pages/gallery-page.html">
+                <a href="#" class="overlayzoom"><img src="{{ directory }}/images/portfolio/9.jpg" class="img-responsive" alt=""><span class="zoom"><span><i class="fa fa-heart"></i></span></span> </a> </div>
+
+            <div class="col-xs-12 col-sm-6 col-md-3 items graphics animated" data-animation="fadeIn" data-animation-delay="1100" data-project="portfolio-pages/standard-page-2.html">
+                <a href="#" class="overlayzoom"><img src="{{ directory }}/images/portfolio/10.jpg" class="img-responsive" alt=""><span class="zoom"><span><i class="fa fa-heart"></i></span></span> </a> </div>
+
+            <div class="col-xs-12 col-sm-6 col-md-3 items videos animated" data-animation="fadeIn" data-animation-delay="1200" data-project="portfolio-pages/youtube-page.html">
+                <a href="#" class="overlayzoom"><img src="{{ directory }}/images/portfolio/11.jpg" class="img-responsive" alt=""><span class="zoom"><span><i class="fa fa-video-camera"></i></span></span> </a> </div>
+
+            <div class="col-xs-12 col-sm-6 col-md-3 items photos animated" data-animation="fadeIn" data-animation-delay="1300" data-project="portfolio-pages/standard-page-1.html">
+                <a href="#" class="overlayzoom"><img src="{{ directory }}/images/portfolio/12.jpg" class="img-responsive" alt=""><span class="zoom"><span><i class="fa fa-picture-o"></i></span></span> </a> </div>
+
+            <div class="col-xs-12 col-sm-6 col-md-3 items videos animated" data-animation="fadeIn" data-animation-delay="1400" data-project="portfolio-pages/vimeo-page.html">
+                <a href="#" class="overlayzoom"><img src="{{ directory }}/images/portfolio/5.jpg" class="img-responsive" alt=""><span class="zoom"><span><i class="fa fa-video-camera"></i></span></span> </a> </div>
+
+            <div class="col-xs-12 col-sm-6 col-md-3 items graphics animated" data-animation="fadeIn" data-animation-delay="1500" data-project="portfolio-pages/standard-page-1.html">
+                <a href="#" class="overlayzoom"><img src="{{ directory }}/images/portfolio/6.jpg" class="img-responsive" alt=""><span class="zoom"><span><i class="fa fa-heart"></i></span></span> </a> </div>
+
+            <div class="col-xs-12 col-sm-6 col-md-3 items photos animated" data-animation="fadeIn" data-animation-delay="1600" data-project="portfolio-pages/gallery-page.html">
+                <a href="#" class="overlayzoom"><img src="{{ directory }}/images/portfolio/7.jpg" class="img-responsive" alt=""><span class="zoom"><span><i class="fa fa-picture-o"></i></span></span> </a> </div>
+
+            <div class="col-xs-12 col-sm-6 col-md-3 items videos animated" data-animation="fadeIn" data-animation-delay="1700" data-project="portfolio-pages/youtube-page.html">
+                <a href="#" class="overlayzoom"><img src="{{ directory }}/images/portfolio/8.jpg" class="img-responsive" alt=""><span class="zoom"><span><i class="fa fa-video-camera"></i></span></span> </a> </div>
+
+        </div>
+        <!-- Portfolio Thumbs Ends -->
+    </div>
+</section>
+<!-- /.PORTFOLIO -->

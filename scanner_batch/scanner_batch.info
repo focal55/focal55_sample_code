@@ -1,0 +1,5 @@
+name = Scanner Batch
+description = Uses Scanner module's API to perform mass search and replace jobs. It intakes a CSV file that includes the search and replace values and processes them with Batch API.
+core = 7.x
+version = 7.x-1.x-dev
+dependencies[] = scanner

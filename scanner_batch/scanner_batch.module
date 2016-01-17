@@ -1,0 +1,55 @@
+<?php
+
+/**
+ * @file
+ * Scanner Batch - Search and Replace Scanner module add on.
+ *
+ * The Scanner Batch module intakes a CSV file with search and
+ * replace values and processes them in batch using the Search
+ * and Replace Scanner module's API.
+ *
+ * CSV files are saved and a table report is generated which
+ * displays how many times the search value is found.
+ *
+ * @Todo:
+ * 1. Make CSV parser more robust (more delimiters).
+ * 2. Accept regex patterns inside CSV search values.
+ */
+
+module_load_include('inc', 'scanner_batch', 'scanner_batch.form');
+module_load_include('inc', 'scanner_batch', 'scanner_batch.batch');
+
+/**
+ * Implements hook_permission().
+ */
+function scanner_batch_permission() {
+  return array(
+    'use scanner batch' => array(
+      'title' => t('Use Scanner Batch'),
+      'description' => t('Perform batch search and replace jobs.'),
+    ),
+  );
+}
+
+/**
+ * Implements hook_menu().
+ */
+function scanner_batch_menu() {
+  $items = array();
+  $items['admin/content/scanner/batch'] = array(
+    'title' => 'Scanner Batch',
+    'page callback' => 'scanner_batch_preview',
+    'access arguments' => array('use scanner batch'),
+    'file' => 'scanner_batch.pages.inc',
+    'type' => MENU_LOCAL_TASK,
+    'weight' => 4,
+  );
+  $items['admin/content/scanner/batch/ajax'] = array(
+    'page callback' => 'scanner_batch_search',
+    'access arguments' => array('use batch redirect updates'),
+    'file' => 'scanner_batch.pages.inc',
+    'type' => MENU_CALLBACK,
+  );
+
+  return $items;
+}

@@ -1,0 +1,102 @@
+.navbar-brand {
+  height: auto;
+  clear: both;
+  text-transform: uppercase;
+  @media (min-width: 732px) {
+    clear: inherit;
+    margin-top: @padding-large-vertical * 3;
+  }
+  .slogan {
+    text-transform: none;
+    display: block;
+    color: @gray-dark;
+  }
+}
+.navbar-default {
+  height:100%;
+  @media @tablet {
+    height: 51px;
+  }
+}
+.navbar-default .navbar-nav > .dropdown > a .caret,
+.navbar-default .navbar-nav > .dropdown > a:hover .caret,
+.navbar-default .navbar-nav > .dropdown > a:focus .caret {
+  border-top-color: #fff;
+  border-bottom-color: #fff;
+}
+
+header#branding {
+  margin-bottom: 0;
+  margin-top: 0;
+  .secondary-nav-container {
+    .pull-right();
+  }
+}
+
+header.nav-container.navbar.container {
+  margin-top: 0;
+  z-index:2;
+  a {
+    text-transform: uppercase;
+  }
+  @media (max-width: @screen-sm-min) {
+    margin-left: -@grid-gutter-width / 2;
+    margin-right: -@grid-gutter-width / 2;
+  }
+}
+
+.navbar-collapse {
+  nav {
+    ul {
+      li {
+        a {
+
+        }
+      }
+    }
+  }
+}
+
+.region-navigation {
+  #block-search-form {
+    display:none;
+    @media @tablet {
+      display: block;
+    }
+    margin: 5px -25px 5px 5px;
+    form.form-search {
+      width: 175px;
+      @media @normal {
+        width:auto;
+        max-width:300px;
+      }
+      .pull-right();
+      .form-control {
+        color: @gray-dark;
+        background-color: lighten(@navbar-default-bg, 9%);
+        border-color: darken(@navbar-default-bg, 9%);
+        &::-webkit-input-placeholder {
+          color: #FFF;
+        }
+        &:-moz-placeholder {
+          /* Firefox 18- */
+          color: #FFF;
+        }
+        &::-moz-placeholder {
+          /* Firefox 19+ */
+          color: #FFF;
+        }
+        &:-ms-input-placeholder {
+          color: #FFF;
+        }
+      }
+      .btn-default {
+        background-color: darken(@navbar-default-bg, 9%);
+        border-color: darken(@navbar-default-bg, 9%);
+        color: #fff;
+      }
+    }
+  }
+  #block-santacruz-misc-newsletter-subscription-html {
+  }
+}

@@ -1,0 +1,15 @@
+name: One Page Website
+type: theme
+description: Configurable one page website.
+core: 8.x
+libraries:
+  - onepage/global-styling
+libraries-override:
+  core/jquery:
+      js:
+        assets/vendor/jquery/jquery.min.js: js/jquery-1.11.0.min.js
+regions:
+  header: Header
+  content: Content
+  sidebar_first: 'Sidebar first'
+  footer: Footer

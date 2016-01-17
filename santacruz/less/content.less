@@ -1,0 +1,535 @@
+// Fonts & HTML Elements ------------------------------------------------------/
+h1.page-header {
+  background:url("../images/header-title-bg-blue.png") no-repeat left;
+  margin:0 0 40px 0;
+  padding:0;
+  border-bottom:none;
+  .page-header-inner {
+    .accent_font(28px, 300);
+    display:inline-block;
+    background:url("../images/header-title-arrow.png") no-repeat right;
+    color:#fff;
+    line-height:47px;
+    padding: 0 50px 0 20px;
+  }
+  &.orange {
+    background:url("../images/header-title-bg-orange.png") no-repeat left;
+    .page-header-inner {
+      background:url("../images/header-title-arrow-orange.png") no-repeat right;
+    }
+  }
+  &.green {
+    background:url("../images/header-title-bg-green.png") no-repeat left;
+    .page-header-inner {
+      background:url("../images/header-title-arrow-green.png") no-repeat right;
+    }
+  }
+}
+
+.accent {
+  .accent_font(@font-size-base, 300);
+}
+
+.btn-santacruz {
+  .btn-santacruz();
+  &.btn-green {
+    .btn-santacruz(@santacruz-green);
+  }
+  &.btn-white {
+    .btn-santacruz(#fff);
+  }
+}
+
+.no-padding-left {
+  padding-left:0 !important;
+}
+.no-padding-right {
+  padding-right:0 !important;
+}
+
+.container-fluid {
+  padding:0;
+}
+
+.main-container.container {
+  position:relative;
+  z-index:1;
+}
+
+// Views ----------------------------------------------------------------------/
+.view-header {
+  padding:0 0 30px 0;
+  font-size:@font-size-small;
+}
+
+.view-resources.view-display-id-plant_pallets_page,
+.view-resources.view-display-id-videos_page,
+.view-gardens {
+  .container-fluid {
+    .views-row {
+      .views-field-field-video-embed-thumbnail-path,
+      .views-field-field-image,
+      .views-field-field-images-after {
+        img {
+          @media (min-width: @screen-md-min) {
+            width: 100%;
+            height: auto;
+          }
+        }
+      }
+    }
+  }
+}
+
+// Views grid pages.
+.page-resources-plant-pallets,
+.page-resources-videos,
+.page-gardens {
+  .views-image-grid();
+}
+
+// Views List Pages.
+.view-resources.view-display-id-resource_page {
+  .views-list()
+}
+
+// Gardens Lists.
+.page-gardens {
+  h1.page-header {
+    background:url("../images/header-title-bg-green.png") no-repeat left;
+    .page-header-inner {
+      background:url("../images/header-title-arrow-green.png") no-repeat right;
+    }
+  }
+  .view-footer {
+    a {
+      .btn-santacruz(@santacruz-green, @font-size-large);
+      background:@santacruz-green;
+      color:#fff;
+      text-transform: uppercase
+    }
+  }
+}
+
+// Ocean Friendly Gardens.
+.view-public-gardens.view-display-id-page {
+  .view-header {
+    font-size:14px;
+    h3 {
+      margin-top:0;
+    }
+  }
+  //.container-fluid {
+  //  .views-row {
+  //    float:left;
+  //    width:100%;
+  //    padding:0 15px;
+  //    margin-bottom:15px;
+  //    @media @tablet {
+  //      width:50%;
+  //    }
+  //    &.views-row-odd {
+  //      clear:both;
+  //    }
+  //    .views-field-field-image {
+  //      img {
+  //        width:100%;
+  //        height:auto;
+  //      }
+  //    }
+  //    .views-field-body {
+  //      margin:15px 0;
+  //    }
+  //    .views-field-field-location,
+  //    .views-field-field-year-planted,
+  //    .views-field-field-square-feet {
+  //      background:lighten(@santacruz-orange, 35%);
+  //      padding:5px 15px;
+  //      margin-bottom:5px;
+  //      .views-label {
+  //        font-weight:bold;
+  //      }
+  //    }
+  //  }
+  //}
+
+  .view-content {
+    .views-field-title {
+      h4 {
+        text-align: center;
+        font-size: 24px;
+        margin-bottom:15px;
+      }
+    }
+    .views-field-nothing {
+      margin-bottom:50px;
+      .images {
+        clear:both;
+        overflow:hidden;
+        .before, .after {
+          float:left;
+          width:50%;
+          img {
+            width:100%;
+            height:auto;
+          }
+        }
+      }
+      .description-wrapper {
+        background:#a1a1a1;
+        color:#fff;
+        .description-row-one {
+          border-bottom:1px solid #fff;
+          .inner {
+            text-align: center;
+            width: 60%;
+            margin: 0 auto;
+            font-size:16px;
+            padding:10px 0;
+          }
+        }
+        .description-row-two {
+          .inner {
+            width:70%;
+            margin:0 auto;
+            clear:both;
+            overflow:hidden;
+            border-left:1px solid #fff;
+            border-right:1px solid #fff;
+            .location, .year, .irrigation, .sqft {
+              float:left;
+              .inner {
+                width:100%;
+                padding:5px;
+                border:none;
+              }
+            }
+            .location, .irrigation {
+              width:70%;
+              border-right:1px solid #fff;
+            }
+            .year, .sqft {
+              width:30%;
+            }
+            .irrigation {
+              clear:both;
+            }
+            .location, .year {
+              border-bottom:1px solid #fff;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+// Programs Page.
+.view-programs.view-display-id-page,
+.view-resources.view-display-id-articles_page {
+  .views-row {
+    clear:both;
+    overflow:hidden;
+    .views-field-field-image {
+      float:left;
+    }
+    .views-field-title {
+      margin-left:80px;
+      h4 {
+        margin-top:0;
+      }
+    }
+    .views-field-body {
+      margin-left:80px;
+      background:url('../images/divider-dotted.png') repeat-x bottom;
+      padding-bottom:20px;
+      margin-bottom:15px;
+    }
+    &.views-row-last {
+      .views-field-body {
+        background: none;
+      }
+    }
+  }
+}
+
+// Events page.
+.view-events {
+  .views-row {
+    margin-bottom: 30px !important;
+    padding-bottom:30px !important;
+    background:url("../images/divider-dotted.png") repeat-x bottom;
+    .date-display-single {
+      color:@santacruz-mustard;
+      text-transform: uppercase;
+      & > div {
+        display:inline;
+      }
+    }
+    .views-field-title {
+      h4 {
+        a {
+          .accent_font(28px, 300);
+        }
+      }
+    }
+    .views-field-field-customer-type {
+      font-weight:bold;
+      font-size:16px;
+    }
+    &.views-row-last {
+      background:none;
+    }
+  }
+}
+
+// Videos page.
+.page-resources-videos {
+  h1.page-header {
+    background:url("../images/header-title-bg-blue.png") no-repeat left;
+    margin:0 0 40px 0;
+    padding:0;
+    border-bottom:none;
+    .page-header-inner {
+      .accent_font(28px, 100);
+      display:inline-block;
+      background:url("../images/header-title-arrow-teal.png") no-repeat right;
+      color:#fff;
+      line-height:47px;
+      padding: 0 50px 0 20px;
+
+    }
+  }
+}
+
+// Resources.
+.page-resources-general-information,
+.page-resources-plant-databases,
+.page-resources-courses-guides,
+.page-resources-reading-resources {
+  .views-row {
+    background:url('../images/divider-dotted.png') repeat-x bottom;
+    .views-field-field-image,
+    .views-field-body {
+      display:none;
+    }
+    .views-field-title {
+      margin-left:0 !important;
+    }
+    &.views-row-last {
+      background:none;
+    }
+  }
+}
+
+// Content types --------------------------------------------------------------/
+.node {
+  .details {
+    .field {
+      background:lighten(@santacruz-orange, 35%);
+      padding:10px 50px;
+      margin-bottom:5px;
+    }
+  }
+}
+
+.node-plant-pallet {
+  img {
+    width: 100%;
+    height: auto;
+  }
+  .field-name-field-image-gallery {
+    .field-items {
+      .make-row();
+      .field-item {
+        .make-sm-column(3);
+      }
+    }
+  }
+}
+
+.node-resource {
+  .field-name-field-image {
+    margin-bottom:30px;
+    img {
+      width: 100%;
+      height: auto;
+    }
+  }
+  #description {
+    margin-top: @padding-large-vertical;
+    margin-bottom: 30px;
+  }
+}
+
+.node-type-garden {
+  h1.page-header {
+    background:url("../images/header-title-bg-green.png") no-repeat left;
+    .page-header-inner {
+      background:url("../images/header-title-arrow-green.png") no-repeat right;
+    }
+  }
+  .field-name-field-images-before,
+  .field-name-field-images-after {
+    .field-label {
+      color:@santacruz-green;
+    }
+    .field-items {
+      .make-row();
+      .field-item {
+        .make-sm-column(3);
+        margin-bottom:30px;
+        img {
+          width: 100%;
+          height: auto;
+        }
+      }
+    }
+  }
+  #garden-middle {
+    .box {
+      background:@santacruz-gray;
+      padding:20px 30px;
+      min-height:196px;
+      .field {
+        padding-bottom:5px;
+        margin-bottom:5px;
+        border-bottom:3px solid #fff;
+        .field-label {
+          text-transform: uppercase;
+        }
+        &:last-child {
+          border:none;
+          margin:0;
+        }
+      }
+      &.plant-list {
+        .field-label {
+          text-transform: uppercase;
+          padding-bottom:5px;
+          margin-bottom:5px;
+          border-bottom:3px solid #fff;
+        }
+      }
+      &.contact {
+        padding:20px 70px;
+      }
+    }
+  }
+  #button-wrapper {
+    margin-top:30px;
+    text-align:right;
+  }
+}
+
+.node-type-program, .page-programs {
+  h1.page-header {
+    background:url("../images/header-title-bg-orange.png") no-repeat left;
+    margin:0 0 40px 0;
+    padding:0;
+    border-bottom:none;
+    .page-header-inner {
+      .accent_font(28px, 300);
+      display:inline-block;
+      background:url("../images/header-title-arrow-orange.png") no-repeat right;
+      color:#fff;
+      line-height:47px;
+      padding: 0 50px 0 20px;
+    }
+  }
+}
+
+.node-type-event {
+  h1.page-header {
+    background:url("../images/header-title-bg-orange.png") no-repeat left;
+    margin:0 0 40px 0;
+    padding:0;
+    border-bottom:none;
+    .page-header-inner {
+      .accent_font(28px, 100);
+      display:inline-block;
+      background:url("../images/header-title-arrow-orange.png") no-repeat right;
+      color:#fff;
+      line-height:47px;
+      padding: 0 50px 0 20px;
+    }
+  }
+  #date {
+    font-size:28px;
+    font-weight:bold;
+    color:@santacruz-mustard;
+    border-bottom:6px solid #ded2b6;
+    display:inline-block;
+    padding-bottom:10px;
+    margin-bottom:10px;
+    div {
+      display:inline;
+    }
+  }
+  #address {
+    .accent_font(@font-size-large, 300);
+    color:@santacruz-mustard;
+    margin-bottom:30px;
+  }
+  #description {
+    padding-bottom:30px;
+    margin-bottom:30px;
+    border-bottom:6px solid #f4f2f3;
+  }
+  #programs {
+    background:#7d9eb3;
+    padding:20px;
+    margin-top:25px;
+    color:#fff;
+    h4 {
+      margin-bottom:25px;
+    }
+    .field-item {
+      border-bottom:1px solid #a2b8c7;
+      padding-bottom:5px;
+      margin-bottom:5px;
+      a {
+        color:#eeeeee;
+      }
+      &:last-child {
+        border:none;
+        margin:0;
+        padding:0;
+      }
+    }
+  }
+}
+
+.node-type-plant-pallet {
+  #plants {
+    background:@santacruz-gray;
+    padding:20px 30px;
+    margin:30px 0 5px 0;
+    .field-label {
+      text-transform: uppercase;
+      padding-bottom:10px;
+      margin-bottom:10px;
+      border-bottom:3px solid #fff;
+    }
+  }
+  #hydrozone {
+    clear:both;
+    overflow:hidden;
+    .icon {
+      float:left;
+      background:@santacruz-blue;
+      color:#fff;
+      font-size:24px;
+      line-height: 45px;
+      width:45px;
+      text-align:center;
+    }
+    .text {
+      padding:5px 15px 0 15px;
+      margin-left:50px;
+      background:#8db7df;
+      color:#fff;
+      font-size:@font-size-large;
+    }
+  }
+}

@@ -1,0 +1,60 @@
+{#
+/**
+ * @file
+ * Onepage Template's Contact Section.
+ *
+#}
+
+<!-- CONTACT STARTS
+   ========================================================================= -->
+<section id="contact">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 section-heading animated" style="text-align:center" data-animation="fadeInUp" data-animation-delay="0">
+                <h2>CONTACT US</h2>
+                <h1>Get in touch with us</h1>
+                <p class="line">&nbsp;</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-6 animated" data-animation="fadeInUp" data-animation-delay="100">
+                <h3>Postal Address</h3>
+                <p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget.</p>
+                <div class="address"> <i class="fa fa-map-marker"></i> PO Box 16122 Collins Street West, Victoria 8007 Australia<br>
+                    <br>
+                    <i class="fa fa-phone"></i> +12 3 4567 8901<br>
+                    <i class="fa fa-print"></i> +12 3 4567 8901 <br>
+                    <br>
+                    <i class="fa fa-envelope"></i> info@abcd.com<br>
+                    <i class="fa fa-globe"></i> www.abcd.com
+                </div>
+            </div>
+            <div class="col-lg-6 form-element animated" data-animation="fadeInUp" data-animation-delay="300">
+                <h3>Feel Free to Drop Us a Line</h3>
+                <p>Tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo. </p>
+                <div class="form">
+                    <form action='process.php' method='post' name='ContactForm' id='ContactForm' >
+                        <div id='message_post'></div>
+                        <div class="input-group"> <span class="input-group-addon">@</span>
+                            <input type="text" name="name" class="form-control" placeholder="Name *">
+                        </div>
+                        <div class="input-group"> <span class="input-group-addon">@</span>
+                            <input type="text" name="email" class="form-control" placeholder="Email *">
+                        </div>
+                        <div class="input-group"> <span class="input-group-addon">@</span>
+                            <input type="text" name="website" class="form-control" placeholder="Subject">
+                        </div>
+                        <div class="input-group"> <span class="input-group-addon">@</span>
+                            <textarea name="comment" class="form-control" placeholder="Comment *"></textarea>
+                        </div>
+                        <div class="input-group form-buttons"> <span class="input-group-btn">
+                           <button class="btn btn-default" type='submit' value='Submit' name='submitf' id="submitf" style="width:120px;height:40px;"><i class="fa fa-envelope"></i> SEND</button>
+                           </span>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- /.CONTACT -->
