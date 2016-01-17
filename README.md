@@ -12,7 +12,7 @@
     This is a Drupal contributed module still in a sandbox mode. You can find it at https://www.drupal.org/project/issues/2260223. This module is an extension of the Scanner module and allows simple back replacements using a CSV file upload and Drupal's batching system. Focal55 developed and wrote all the code with help and guidance from Hook42. You will find samples of utilizing Drupal's Batch API and hook implementations.</p>
   </li>
   <li>
-    <p><strong>santacruz</strong<br>
+    <p><strong>santacruz</strong><br>
     This is a Drupal 7 theme written while under contract for <a href="https://droplet.us" target="_blank">Droplet Technologies</a>. You will find common theming related work included template overrides, LESS files for compiling smarter CSS, use of the Bootstrap framework and hook implementation from the template.php file.</p>
   </li>
   <li>
