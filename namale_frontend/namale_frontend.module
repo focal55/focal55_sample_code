@@ -1,0 +1,775 @@
+<?php
+/**
+ * @file
+ * Code for the Namale Frontend feature.
+ */
+
+include_once 'namale_frontend.features.inc';
+include_once 'namale_frontend.forms.inc';
+
+/**
+ * Implements hook_node_validate().
+ */
+function namale_frontend_node_validate($node, $form, &$form_state) {
+  // Add email validation to field_email.
+  if (isset($form_state['values']['field_email'])) {
+    if ($error = user_validate_mail($form_state['values']['field_email'][LANGUAGE_NONE][0]['value'])) {
+      form_set_error('field_email][' . LANGUAGE_NONE . '][0][value', $error);
+    }
+  }
+}
+
+/**
+ * Implements hook_node_submit().
+ */
+function namale_frontend_node_submit($node, $form, &$form_state) {
+  if ($node->type == 'newsletter_signup') {
+    _namale_frontend_post_process_newsletter_signup($form_state);
+  }
+  if ($node->type == 'inquiry_signup') {
+    _namale_frontend_post_process_newsletter_signup($form_state);
+  }
+}
+
+/**
+ * Implements hook_form_alter().
+ */
+function namale_frontend_form_alter(&$form, &$form_state) {
+  // Choose Blocks to display via Field.
+  if (isset($form['field_blocks_display'])) {
+    if ($blocks = _fetch_namale_blocks()) {
+      $options = array();
+      foreach ($blocks as $delta => $block) {
+        if (isset($block->info)) {
+          $options[$delta] = $block->info;
+          $default_value[] = $delta;
+        }
+      }
+      $default_value = array();
+      if (!empty($form['#node']->field_blocks_display)) {
+        $default_value = array();
+        foreach ($form['#node']->field_blocks_display[LANGUAGE_NONE] as $index => $data) {
+          $default_value[] = $data['value'];
+        }
+      }
+      else {
+        // Standard Defaults.
+        $default_value = array('namale_featured_packages', 'namale_footer', 'namale_inquiry_sign', 'namale_packages', 'namale_recent_posts', 'namale_testimonial', 'client-block-102');
+      }
+      $form['field_blocks_display'][LANGUAGE_NONE]['#options'] = $options;
+
+      $form['field_blocks_display'][LANGUAGE_NONE]['#default_value'] = $default_value;
+    }
+  }
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function namale_frontend_form_webform_client_form_133_alter(&$form, &$form_state) {
+  $form['submitted']['first_name']['#attributes']['class'] = array('form-control');
+  $form['submitted']['last_name']['#attributes']['class'] = array('form-control');
+  $form['submitted']['email']['cc_email_address']['#attributes']['placeholder'] = t("Email Address");
+  $form['submitted']['email']['cc_email_address']['#attributes']['class'] = array('form-control');
+  $form['actions']['submit']['#value'] = t('GET YOUR GUIDE');
+  $form['actions']['submit']['#attributes']['class'] = array('btn', 'btn-success');
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function namale_frontend_form_webform_client_form_101_alter(&$form, &$form_state) {
+  $form['submitted']['email']['cc_email_address']['#attributes']['placeholder'] = t("Your Email Address");
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function namale_frontend_form_webform_client_form_102_alter(&$form, &$form_state) {
+  $form['submitted']['email']['cc_email_address']['#attributes']['placeholder'] = t("Your Email Address");
+  $form['submitted']['field_customfield9']['#option'][''] = '- Select Bure Type - ';
+  // Salesforce Integration.
+  $form['#submit'][] = '_namale_frontend_post_process_inquiry_signup';
+}
+
+/**
+ * Implements hook_block_info().
+ */
+function namale_frontend_block_info() {
+  $blocks['namale_inquiry_sign'] = array(
+    'info' => t('Namale: Inquiry Signup'),
+  );
+  $blocks['namale_footer'] = array(
+    'info' => t('Namale: Footer'),
+  );
+  $blocks['namale_testimonial'] = array(
+    'info' => t('Namale: Testimonial'),
+  );
+  $blocks['namale_recent_posts'] = array(
+    'info' => t('Namale: Recent Posts'),
+  );
+  $blocks['namale_featured_packages'] = array(
+    'info' => t('Namale: Featured Packages'),
+  );
+  $blocks['namale_page_slideshow'] = array(
+    'info' => t('Namale: Page Slideshow'),
+  );
+  $blocks['namale_accommodations_list'] = array(
+    'info' => t('Namale: Accommodations List'),
+  );
+  $blocks['namale_accommodations_nav'] = array(
+    'info' => t('Namale: Accommodations Nav'),
+  );
+  $blocks['namale_room_starting_price'] = array(
+    'info' => t('Namale: Room Starting Price'),
+  );
+  $blocks['namale_packages_list'] = array(
+    'info' => t('Namale: Packages List'),
+  );
+  $blocks['namale_packages'] = array(
+    'info' => t('Namale: All Packages'),
+  );
+  $blocks['namale_gallery_page'] = array(
+    'info' => t('Namale: Gallery Page'),
+  );
+  $blocks['namale_gallery_slider'] = array(
+    'info' => t('Namale: Gallery Slider'),
+  );
+  $blocks['namale_homepage_slider'] = array(
+    'info' => t('Namale: Homepage Slider'),
+  );
+  $blocks['namale_testimonials_list'] = array(
+    'info' => t('Namale: Testimonials List'),
+  );
+  $blocks['namale_conversion_bar'] = array(
+    'info' => t('Namale: Conversion Bar'),
+  );
+  return $blocks;
+}
+
+/**
+ * Implements hook_block_view().
+ */
+function namale_frontend_block_view($delta = '') {
+  global $user;
+  $block = array();
+  switch ($delta) {
+    case 'namale_inquiry_sign':
+      $block['subject'] = '';
+      $block['content'] = namale_inquiry_signup_form();
+      break;
+    case 'namale_footer':
+      $block['subject'] = '';
+      $block['content'] = theme('namale_footer_block');
+      break;
+    case 'namale_testimonial':
+      $block['subject'] = '';
+      $block['content'] = theme('namale_testimonial_block');
+      break;
+    case 'namale_recent_posts':
+      $block['subject'] = '';
+      $block['content'] = theme('namale_recent_posts_block');
+      break;
+    case 'namale_featured_packages':
+      $block['subject'] = '';
+      $block['content'] = theme('namale_featured_packages_block');
+      break;
+    case 'namale_page_slideshow':
+      $menu = menu_get_item();
+      if ($menu['page_callback'] == 'node_page_view' && $menu['page_arguments'][0]->type == 'page') {
+        $node = $menu['page_arguments'][0];
+        $block['subject'] = '';
+        $block['content'] = theme('namale_page_slideshow_block', array('node' => $node));
+      }
+      break;
+    case 'namale_accommodations_list':
+      $block['subject'] = '';
+      $block['content'] = theme('namale_accommodations_list_block');
+      break;
+    case 'namale_accommodations_nav':
+      $block['subject'] = '';
+      $block['content'] = theme('namale_accommodations_nav_block');
+      break;
+    case 'namale_room_starting_price':
+      $menu = menu_get_item();
+      if ($menu['page_callback'] == 'node_page_view' && $menu['page_arguments'][0]->type == 'room') {
+        $node = $menu['page_arguments'][0];
+        $block['content'] = theme('namale_accommodations_starting_price_block', array('node' => $node));
+      }
+      $block['subject'] = '';
+      break;
+    case 'namale_packages_list':
+      $block['subject'] = '';
+      $block['content'] = theme('namale_packages_list_block');
+      break;
+    case 'namale_packages':
+      $block['subject'] = '';
+      $block['content'] = theme('namale_packages_block');
+      break;
+    case 'namale_gallery_page':
+      $block['subject'] = '';
+      $block['content'] = theme('namale_gallery_page');
+      break;
+    case 'namale_gallery_slider':
+      $block['subject'] = '';
+      $block['content'] = theme('namale_gallery_slider');
+      break;
+    case 'namale_homepage_slider':
+      $block['subject'] = '';
+      $block['content'] = theme('namale_homepage_slider');
+      break;
+    case 'namale_testimonials_list':
+      $block['subject'] = '';
+      $block['content'] = theme('namale_testimonials_list');
+      break;
+    case 'namale_conversion_bar':
+      $block['subject'] = '';
+      $block['content'] = theme('namale_frontend_conversion_bar');
+      break;
+  }
+  return $block;
+}
+
+/**
+ * Implement hook_theme().
+ */
+function namale_frontend_theme() {
+  $module_path = drupal_get_path('module', 'namale_frontend');
+  return array(
+    'newsletter_signup_autoresponder' => array(
+      'variables' => array('first_name' => ''),
+      'template' => 'newsletter-signup-autoresponder',
+      'path' => $module_path . '/templates',
+    ),
+    'inquiry_signup_autoresponder' => array(
+      'variables' => array('first_name' => ''),
+      'template' => 'inquiry-signup-autoresponder',
+      'path' => $module_path . '/templates',
+    ),
+    'namale_footer_block' => array(
+      'template' => 'footer',
+      'path' => $module_path . '/templates',
+    ),
+    'namale_testimonial_block' => array(
+      'template' => 'testimonial',
+      'path' => $module_path . '/templates',
+    ),
+    'namale_recent_posts_block' => array(
+      'template' => 'recent-posts',
+      'path' => $module_path . '/templates',
+    ),
+    'namale_featured_packages_block' => array(
+      'template' => 'featured-packages',
+      'path' => $module_path . '/templates',
+    ),
+    'namale_page_slideshow_block' => array(
+      'variables' => array('node' => NULL),
+      'template' => 'page-slideshow',
+      'path' => $module_path . '/templates',
+    ),
+    'namale_accommodations_list_block' => array(
+      'template' => 'namale-accommodations-list',
+      'path' => $module_path . '/templates',
+    ),
+    'namale_accommodations_nav_block' => array(
+      'template' => 'namale-accommodations-nav',
+      'path' => $module_path . '/templates',
+    ),
+    'namale_accommodations_starting_price_block' => array(
+      'variables' => array('node' => NULL),
+      'template' => 'namale-accommodations-starting-price-block',
+      'path' => $module_path . '/templates',
+    ),
+    'namale_packages_list_block' => array(
+      'template' => 'namale-packages-list',
+      'path' => $module_path . '/templates',
+    ),
+    'namale_inquiry_signup_form' => array(
+      'render element' => 'form',
+      'template' => 'namale-inquiry-form',
+      'path' => $module_path . '/templates',
+    ),
+    'namale_packages_block' => array(
+      'template' => 'all-packages-block',
+      'path' => $module_path . '/templates',
+    ),
+    'namale_gallery_page' => array(
+      'template' => 'gallery-page',
+      'path' => $module_path . '/templates',
+    ),
+    'namale_gallery_slider' => array(
+      'template' => 'gallery-slider',
+      'path' => $module_path . '/templates',
+    ),
+    'namale_homepage_slider' => array(
+      'template' => 'homepage-slider',
+      'path' => $module_path . '/templates',
+    ),
+    'namale_testimonials_list' => array(
+      'template' => 'testimonials-list',
+      'path' => $module_path . '/templates',
+    ),
+    'namale_frontend_conversion_bar' => array(
+      'variables' => array(),
+      'template' => 'conversion-bar',
+      'path' => $module_path . '/templates',
+    ),
+  );
+}
+
+/**
+ * Implements hook_preprocess_THEME_NAME().
+ */
+function namale_frontend_preprocess_namale_frontend_conversion_bar(&$variables) {
+  $block = module_invoke('webform', 'block_view', 'client-block-133');
+  $variables['webform_block'] = $block['content'];
+}
+
+/**
+ * Implements hook_preprocess_THEME_NAME().
+ */
+function namale_frontend_preprocess_namale_testimonial_block(&$variables) {
+  $query = db_select('node', 'n');
+  $query->fields('n', array('nid'));
+  $query->condition('n.type', 'testimonial');
+  $query->condition('n.promote', 1);
+  $query->orderRandom();
+  $query->range(0,1);
+  $results = $query->execute()->fetchAll();
+  if ($results) {
+    foreach ($results as $result) {
+      $variables['testimonial'] = node_load($result->nid);
+    }
+  }
+}
+
+/**
+ * Implements hook_preprocess_THEME_NAME().
+ */
+function namale_frontend_preprocess_namale_testimonials_list(&$variables) {
+  $query = db_select('node', 'n');
+  $query->fields('n', array('nid'));
+  $query->condition('n.type', 'testimonial');
+  $query->orderRandom();
+  $results = $query->execute()->fetchAll();
+  if ($results) {
+    foreach ($results as $result) {
+      $variables['testimonials'][] = node_load($result->nid);
+    }
+  }
+  $block = block_load('block', '5');
+  $block_content = _block_get_renderable_array(_block_render_blocks(array($block)));
+  $variables['testimonial_description_block'] = drupal_render($block_content);
+
+}
+
+/**
+ * Implements hook_preprocess_THEME_NAME().
+ */
+function namale_frontend_preprocess_namale_recent_posts_block(&$variables) {
+  $query = db_select('node', 'n');
+  $query->fields('n', array('nid'));
+  $query->leftJoin('field_data_field_post_date', 'date', 'n.nid = date.entity_id');
+  $query->condition('n.type', 'blog');
+  $query->orderBy('date.field_post_date_value', 'DESC');
+  $query->range(0,2);
+  $results = $query->execute()->fetchAll();
+  if ($results) {
+    foreach ($results as $result) {
+      $variables['posts'][] = node_load($result->nid);
+    }
+  }
+}
+
+/**
+ * Implements hook_preprocess_THEME_NAME().
+ */
+function namale_frontend_preprocess_namale_homepage_slider(&$variables) {
+  // Load Bean Slideshow.
+  $slideshow = entity_load('bean', FALSE, array('label' => 'Homepage'));
+  $slideshow = array_values($slideshow);
+  if (!empty($slideshow[0]->field_slide)) {
+    foreach ($slideshow[0]->field_slide[LANGUAGE_NONE] as $delta => $data) {
+      $slide = entity_metadata_wrapper('field_collection_item', $data['value']);
+      $image = $slide->field_image->value();
+      $link = $slide->field_slideshow_link->value();
+      $variables['slides'][] = array(
+        'image' => theme('image', array('path' => $image['uri'], 'width' => '1800', 'height' => '800')),
+        'caption' => $slide->field_slideshow_caption->value(),
+        'link' => array(
+          'url' => $link['url'],
+          'title' => $link['title']
+        )
+      );
+    }
+  }
+}
+
+/**
+ * Implements hook_preprocess_THEME_NAME().
+ */
+function namale_frontend_preprocess_namale_gallery_page(&$variables) {
+  // Load All Gallery Nodes.
+  $galleries = array();
+  $variables['images'] = array();
+  $query = db_select('node', 'n');
+  $query->fields('n', array('nid'));
+  $query->condition('n.type', 'gallery');
+  $results = $query->execute()->fetchAll();
+  if ($results) {
+    foreach ($results as $result) {
+      $galleries[] = node_load($result->nid);
+    }
+
+    // Gather all images.
+    $count = 0;
+    foreach ($galleries as $gallery) {
+      if (!empty($gallery->field_images)) {
+        foreach ($gallery->field_images[LANGUAGE_NONE] as $image) {
+          $orientation = $image['width'] > $image['height'] ? 'landscape' : 'portrait';
+          $size = $image['width'] < 500 ? 'small' : 'large';
+          $class = array();
+          if ($orientation == 'portrait') {
+            $class[] = 'item-h2';
+          }
+          else {
+            if ($count % 4) {
+              $class[] = 'item-h2 item-w2';
+            }
+            else {
+              $class = array();
+            }
+          }
+          $count++;
+          $variables['images'][] = array(
+            'class' => implode(' ', $class),
+            'path' => file_create_url($image['uri']),
+            'title' => $image['title'],
+            'img' => theme('image', array(
+              'path' => base_path() . drupal_get_path('theme', 'namale') . '/images/blank.png',
+              'width' => $image['width'],
+              'height' => $image['height'],
+              'title' => !empty($image['field_file_image_title_text']) && !empty($image['field_file_image_title_text'][LANGUAGE_NONE][0]['value']) ? $image['field_file_image_title_text'][LANGUAGE_NONE][0]['value'] : NULL,
+              'alt' => !empty($image['field_file_image_alt_text']) && !empty($image['field_file_image_alt_text'][LANGUAGE_NONE][0]['value']) ? $image['field_file_image_alt_text'][LANGUAGE_NONE][0]['value'] : NULL,
+              'attributes' => array(
+                'data-original' => file_create_url($image['uri']),
+              )
+            ))
+          );
+        }
+      }
+    }
+  }
+}
+
+/**
+ * Implements hook_preprocess_THEME_NAME().
+ */
+function namale_frontend_preprocess_namale_gallery_slider(&$variables) {
+  // Load All Gallery Nodes.
+  $galleries = array();
+  $variables['images'] = array();
+  $query = db_select('node', 'n');
+  $query->fields('n', array('nid'));
+  $query->condition('n.type', 'gallery');
+  $results = $query->execute()->fetchAll();
+  if ($results) {
+    foreach ($results as $result) {
+      $galleries[] = node_load($result->nid);
+    }
+
+    // Gather all images.
+    foreach ($galleries as $gallery) {
+      if (!empty($gallery->field_images)) {
+        foreach ($gallery->field_images[LANGUAGE_NONE] as $image) {
+          $variables['images'][] = theme('image', array('path' => $image['uri']));
+        }
+      }
+    }
+  }
+}
+
+/**
+ * Implements hook_preprocess_THEME_NAME().
+ */
+function namale_frontend_preprocess_namale_packages_block(&$variables) {
+  $variables['packages'] = namale_frontend_fetch_packages();
+}
+
+/**
+ * Implement hook_preprocess_THEME_NAME().
+ */
+function namale_frontend_preprocess_namale_featured_packages_block(&$variables) {
+  $variables['packages'] = namale_frontend_fetch_packages();
+}
+
+/**
+ * Implements hook_preprocess_THEME_NAME().
+ */
+function namale_frontend_preprocess_namale_page_slideshow_block(&$variables) {
+  $variables['images'] = array();
+  if (!empty($variables['node']->field_images)) {
+    foreach($variables['node']->field_images[LANGUAGE_NONE] as $delta => $file) {
+      $variables['images'][] = theme('image_style', array('style_name' => '1200x600', 'path' => $file['uri'], 'width' => '1200', 'height' => '600'));
+    }
+  }
+}
+
+/**
+ * Implements hook_preprocess_THEME_NAME().
+ */
+function namale_frontend_preprocess_namale_accommodations_nav_block(&$variables) {
+  // Load the Rooms.
+  $variables['rooms'] = array();
+  $query = db_select('node', 'n');
+  $query->fields('n', array('nid', 'title'));
+  $query->leftJoin('weight_weights', 'w', 'w.entity_id = n.nid');
+  $query->condition('n.type', 'room');
+  $query->orderBy('w.weight', 'ASC');
+  $results = $query->execute()->fetchAllAssoc('nid');
+  if ($results) {
+    foreach ($results as $result) {
+      $variables['rooms'][] = l($result->title, 'node/' . $result->nid);
+    }
+  }
+}
+
+/**
+ * Implements hook_preprocess_THEME_NAME().
+ */
+function namale_frontend_preprocess_namale_accommodations_list_block(&$variables) {
+  // Load the Rooms.
+  $variables['rooms'] = array();
+  $query = db_select('node', 'n');
+  $query->fields('n', array('nid'));
+  $query->leftJoin('weight_weights', 'w', 'w.entity_id = n.nid');
+  $query->condition('n.type', 'room');
+  $query->orderBy('w.weight', 'ASC');
+  $result = $query->execute()->fetchCol();
+  if ($result) {
+    $variables['rooms'] = node_load_multiple($result);
+  }
+}
+
+/**
+ * Implements hook_preprocess_THEME_NAME().
+ */
+function namale_frontend_preprocess_namale_packages_list_block(&$variables) {
+  // Load the Rooms.
+  $variables['packages'] = array();
+  $query = db_select('node', 'n');
+  $query->fields('n', array('nid'));
+  $query->leftJoin('weight_weights', 'w', 'w.entity_id = n.nid');
+  $query->condition('n.type', 'package');
+  $query->orderBy('w.weight', 'ASC');
+  $result = $query->execute()->fetchCol();
+  if ($result) {
+    $variables['packages'] = node_load_multiple($result);
+  }
+
+  // ShareThis.
+  if (module_exists('sharethis')) {
+    $data_options = sharethis_get_options_array();
+    foreach ($variables['packages'] as $index => $package) {
+      $mPath = drupal_get_path_alias('node/' . $package->nid);
+      $mTitle = $package->title;
+      $variables['packages'][$index]->sharethis = theme('sharethis', array('data_options' => $data_options, 'm_path' => $mPath, 'm_title' => $mTitle));
+    }
+  }
+}
+
+/**
+ * Helper: Post Process Newsletter Signup.
+ */
+function _namale_frontend_post_process_newsletter_signup($form_state) {
+  $email = $form_state['values']['field_email'][LANGUAGE_NONE][0]['value'];
+  $first_name = $form_state['values']['field_first_name'][LANGUAGE_NONE][0]['value'];
+  $last_name = $form_state['values']['field_last_name'][LANGUAGE_NONE][0]['value'];
+
+  // Add CTCT Contact.
+  $data['email'] = $email;
+  $data['first_name'] = $first_name;
+  $data['last_name'] = $last_name;
+  $data['list'] = '51';
+  _namale_ctct_add_contact($data);
+}
+
+/**
+ * Helper: Post Process Inquiry Signup.
+ */
+function _namale_frontend_post_process_inquiry_signup($form_state) {
+  // Convenience variables.
+  $email = $form_state['submitted']['email']['cc_email_address']['#value'];
+  $first_name = $form_state['submitted']['field_first_name']['#value'];
+  $last_name = $form_state['submitted']['field_last_name']['#value'];
+  $phone = $form_state['submitted']['field_home_phone']['#value'];
+  $country = $form_state['submitted']['field_country_name']['#value'];
+  $arrival = $form_state['submitted']['field_customfield4']['#value'];
+  $departure = $form_state['submitted']['field_customfield3']['#value'];
+  $refer = $form_state['submitted']['field_customfield5']['#value'];
+  $bure = $form_state['submitted']['field_customfield9']['#value'];
+
+  // SalesForce
+  $data[] = 'first_name=' . $first_name;
+  $data[] = 'last_name=' . $last_name;
+  $data[] = 'email=' . $email;
+  $data[] = '00Nd0000005qsrI=' . $arrival;
+  $data[] = '00Nd0000005qsr9=' . $departure;
+  if ($country) {
+    $data[] = 'country=' . $country;
+  }
+  if ($phone) {
+    $data[] = 'phone=' . $phone;
+  }
+  if ($bure) {
+    $data[] = '00Nd0000005qsrS=' . $bure;
+  }
+  if ($refer) {
+    $data[] = '00Nd0000005qsrc=' . $refer;
+  }
+  $data[] = 'lead_source=Reservation';
+  $data[] = 'oid=';
+
+  $query_string = join("&", $data);
+
+  // CURL Post to SaleForm
+  $salesforce = curl_init();
+  curl_setopt($salesforce, CURLOPT_URL, "https://www.salesforce.com/servlet/servlet.WebToLead?encoding=UTF-8");
+  curl_setopt($salesforce, CURLOPT_POST, count($data));
+  curl_setopt($salesforce, CURLOPT_POSTFIELDS, $query_string);
+  curl_setopt($salesforce, CURLOPT_HEADER, FALSE);
+  curl_setopt($salesforce, CURLOPT_SSL_VERIFYPEER, FALSE);
+  curl_setopt($salesforce, CURLOPT_RETURNTRANSFER, FALSE);
+  curl_setopt($salesforce, CURLOPT_FOLLOWLOCATION, TRUE);
+  $sf_response = curl_exec($salesforce);
+  curl_close($salesforce);
+}
+
+/**
+ * Implements hook_preprocess_page().
+ */
+function namale_frontend_preprocess_page(&$variables) {
+  // Page Block Display Settings.
+  if (isset($variables['node'])) {
+    // Allow Page Template to be selected.
+    if ($variables['node']->type == 'page' && !empty($variables['node']->field_template)) {
+      $variables['theme_hook_suggestions'][] = 'page__template_' . $variables['node']->field_template[LANGUAGE_NONE][0]['value'];
+    }
+
+    // Allow Blocks to be disabled.
+    if (isset($variables['node']->field_blocks_display) && !empty($variables['node']->field_blocks_display)) {
+      $show = array();
+      foreach ($variables['node']->field_blocks_display[LANGUAGE_NONE] as $value) {
+        $show[] = $value['value'];
+      }
+      // Loop through regions.
+      $regions = element_children($variables['page']);
+      foreach ($regions as $region) {
+        foreach ($variables['page'][$region] as $delta => $data) {
+          // Remove module name.
+          $machine_name = str_replace('namale_frontend_', '', $delta);
+          // Make sure this page node has this block enabled.
+          if (strpos($machine_name, 'namale_') !== FALSE && !in_array($machine_name, $show)) {
+            unset($variables['page'][$region]['namale_frontend_' . $machine_name]);
+          }
+          else {
+            // Instagram.
+            $machine_name = str_replace('instagram_feed_', '', $delta);
+            // Make sure this page node has this block enabled.
+            if (strpos($machine_name, 'instagram_') !== FALSE && !in_array($machine_name, $show)) {
+              unset($variables['page'][$region]['instagram_feed_' . $machine_name]);
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+/**
+ * Helper: Add new CTCT User.
+ */
+function _namale_ctct_add_contact($data) {
+  $email = $data['email'];
+  $first_name = $data['first_name'];
+  $last_name = $data['last_name'];
+  $list = $data['list'];
+
+  // Instantiate Constant Contact Object.
+  $cc = new ConstantContact(CTCT_APIKEY);
+  try {
+    // check to see if a contact with the email addess already exists in the account
+    $response = $cc->getContactByEmail(CTCT_ACCESS_TOKEN, $email);
+
+    // create a new contact if one does not exist
+    if (empty($response->results)) {
+      $action = "Creating Contact";
+      $contact = new Contact();
+      $contact->addEmail($email);
+      $contact->addList($list);
+      $contact->first_name = $first_name;
+      $contact->last_name = $last_name;
+      $returnContact = $cc->addContact(CTCT_ACCESS_TOKEN, $contact, TRUE);
+
+      // update the existing contact if address already existed
+    } else {
+      $action = "Updating Contact";
+      $contact = $response->results[0];
+      $contact->addList($list);
+      $contact->first_name = $first_name;
+      $contact->last_name = $last_name;
+      $returnContact = $cc->updateContact(CTCT_ACCESS_TOKEN, $contact, TRUE);
+    }
+
+    // catch any exceptions thrown during the process and print the errors to screen
+  } catch (CtctException $ex) {
+    watchdog('constant_contact', '<pre>' . $ex->getErrors() . '</pre', NULL, WATCHDOG_ERROR);
+  }
+}
+
+/**
+ * Helper: Fetch Namale Blocks.
+ *
+ * @return array $blocks
+ *   Returns array of block bids that have prefix 'namale_' deltas.
+ */
+function _fetch_namale_blocks() {
+  $blocks = array();
+  $query = db_select('block', 'b');
+  $query->fields('b', array('bid', 'module', 'delta'));
+  $db_or = db_or();
+  $db_or->condition('b.delta', array('instagram_feed', 'client-block-102'), 'IN');
+  $db_or->condition('b.delta', 'namale_%', 'LIKE');
+  $query->condition($db_or);
+  if ($blocks = $query->execute()->fetchAllAssoc('delta')) {
+    // Load Blocks From Namale Modules.
+    foreach (module_implements('block_info') as $module) {
+      if (strpos($module, 'namale_') !== FALSE || preg_match('/instagram|webform/', $module)) {
+        $module_blocks = module_invoke($module, 'block_info');
+        foreach ($module_blocks as $delta => $block) {
+          if (isset($blocks[$delta])) {
+            $blocks[$delta]->info = $block['info'];
+          }
+        }
+      }
+    }
+  }
+  return $blocks;
+}
+
+/**
+ * Helper: Fetch Packages.
+ */
+function namale_frontend_fetch_packages() {
+  $packages = array();
+  $query = db_select('node', 'n');
+  $query->fields('n', array('nid'));
+  $query->condition('n.type', 'package');
+  $results = $query->execute()->fetchAll();
+  if ($results) {
+    foreach ($results as $result) {
+      $packages[] = node_load($result->nid);
+    }
+  }
+  return $packages;
+}
